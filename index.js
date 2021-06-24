@@ -1,10 +1,10 @@
 const express = require('express');
 const repoContext = require('./repository/repository-wrapper');
-const cors = require('cors');
-const {validateProduct} = require('./middleware/products-validation');
+// const cors = require('cors');
+const {validateSong} = require('./middleware/song-validation');
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -12,42 +12,42 @@ app.listen(5000, () => {console.log("Server started. Listening on port 5000.");}
 
 
 //GET Requests
-app.get('/api/products', (req, res) =>{
+app.get('/api/songs', (req, res) =>{
     const products = repoContext.products.findAllProducts();
     const songs = repoContext.songs.findAllSongs();
-    return res.send(products);
+    return res.send(songs);
 })
 
-app.get('/api/products/:id', (req, res) =>{
+app.get('/api/songs/:id', (req, res) =>{
     const id = req.params.id;
-    const products = repoContext.products.findProductById(id);
-    return res.send(products);
+    const songs = repoContext.products.findSongById(id);
+    return res.send(songs);
 })
 
 
 //POST Requests
 
-app.post('/api/products',[validateProduct], (req, res) =>{
-    const newProducts = req.body;
-    const addedProducts = repoContext.products.createProduct(newProducts);
-    return res.send(addedProducts);
+app.post('/api/songs',[validateSong], (req, res) =>{
+    const newSongs = req.body;
+    const addedSongs = repoContext.songs.createSong(newSongs);
+    return res.send(addedSongs);
 })
 
 
 //PUT Requests
 
-app.put('/api/products/:id',[validateProduct], (req, res) =>{
+app.put('/api/songs/:id',[validateSong], (req, res) =>{
     const id = req.params.id;
-    const productPropertiesToUpdate = req.body;
-    const updatedProducts = repoContext.products.updateProduct(id, productPropertiesToUpdate);
-    return res.send(updatedProducts);
+    const songPropertiesToUpdate = req.body;
+    const updatedSongs = repoContext.songs.updateSong(id, songPropertiesToUpdate);
+    return res.send(updatedSongs);
 })
 
 
 //DELETE Requests
 
-app.delete('/api/products/:id', (req, res) =>{
+app.delete('/api/songs/:id', (req, res) =>{
     const id = req.params.id;
-    const updatedDataSet = repoContext.products.deleteProduct(id);
+    const updatedDataSet = repoContext.songs.deleteSong(id);
     return res.send(updatedDataSet);
 })
